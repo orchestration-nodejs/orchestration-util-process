@@ -1,6 +1,6 @@
 {
   "name": "orchestration-util-process",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Short-hand functions for launching and capturing the output of processes.",
   "main": "index.js",
   "scripts": {

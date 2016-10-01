@@ -117,6 +117,24 @@ function runProcessWithOutputAndEnvAndInput(cmd, args, envNew, input, callback) 
   });
 }
 
+function runProcessWithOutputAndInput(cmd, args, input, callback) {
+  var child = spawn(
+    cmd,
+    args,
+    { shell: true, stdio: ['pipe', process.stdout, process.stderr] }
+  );
+  child.stdin.setEncoding('utf-8');
+  child.stdin.write(input);
+  child.stdin.end();
+  child.on('exit', (code) => {
+    if (code != 0) {
+      callback(new Error('Process exited with non-zero exit code.'));
+    } else {
+      callback()
+    }
+  });
+}
+
 function runProcessAndCapture(cmd, args, callback) {
   var child = spawn(
     cmd,
@@ -199,6 +217,7 @@ module.exports = {
   runProcessWithOutputAndWorkingDirectory: runProcessWithOutputAndWorkingDirectory,
   runProcessWithOutputAndEnv: runProcessWithOutputAndEnv,
   runProcessWithOutputAndEnvAndInput: runProcessWithOutputAndEnvAndInput,
+  runProcessWithOutputAndInput: runProcessWithOutputAndInput,
   runProcessAndCapture: runProcessAndCapture,
   runProcessAndCaptureAndEnv: runProcessAndCaptureAndEnv,
   runProcessAndCaptureAndWorkingDirectory: runProcessAndCaptureAndWorkingDirectory,
